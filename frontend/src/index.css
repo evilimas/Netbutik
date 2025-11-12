@@ -24,10 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -54,6 +50,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.navigation {
+  display: flex;
+  padding: 0 2em;
+  gap: 1em;
+  justify-content: space-between;
+  border-bottom: solid 2px #444;
+}
+.navigation ul {
+  list-style: none;
+
+  display: flex;
+  gap: 5em;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
