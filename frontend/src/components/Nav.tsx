@@ -3,7 +3,7 @@ import { NavLink } from 'react-router';
 function Nav() {
   return (
     <nav className="navigation">
-      <p>Netbutik</p>
+      <img className="logo" src="/images/logo.png" alt="" />
       <ul>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/pets">Pets</NavLink>
