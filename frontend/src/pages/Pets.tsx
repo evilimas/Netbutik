@@ -1,24 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
+import type { Pet } from '../types/petTypes';
 
 function Pets() {
-  type Pet = {
-    id: number;
-    name: string;
-    species: string;
-    breed: string;
-    age: number;
-    price: number;
-    medicalRecord: MedicalRecord;
-    photo: string;
-    sold: boolean;
-  };
-  type MedicalRecord = {
-    vaccinations: string[];
-    weightKg: number;
-    microchipId: string | null;
-  };
   const [data, setData] = useState<Pet[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,8 +29,8 @@ function Pets() {
 
     fetchData();
   }, []);
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <p className="loading">Loading...</p>;
+  if (error) return <p className="error">Error: {error.message}</p>;
 
   return (
     <>
