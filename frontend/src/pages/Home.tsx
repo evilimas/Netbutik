@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 type Testimonial = {
   quote: string;
   author: string;
+  date?: string;
 };
 type Social = {
   name: string;
@@ -15,14 +16,17 @@ function Home() {
     {
       quote: "The best pet store experience I've ever had!",
       author: 'Jackob- Happy Customer',
+      date: '2025-05-10',
     },
     {
       quote: 'Adopting my new best friend was so easy and fun!',
       author: 'Thomas- Satisfied Pet Owner',
+      date: '2025-06-15',
     },
     {
       quote: "I can't imagine my life without my furry companion!",
       author: 'Emily- Loyal Pet Parent',
+      date: '2026-07-20',
     },
   ];
 
@@ -85,6 +89,8 @@ function Home() {
                 <p>{testimonial.quote}</p>
                 <em>{testimonial.author}</em>
               </blockquote>
+
+              <span className="date">{testimonial.date}</span>
             </article>
           ))}
         </div>
