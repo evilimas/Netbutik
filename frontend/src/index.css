@@ -32,6 +32,19 @@ a:hover {
 body {
   margin: 0 auto;
   max-width: 1500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 h1 {
@@ -136,7 +149,6 @@ p {
   justify-content: space-between;
   gap: 2em;
   padding: 2em 2em;
-  /* border: solid 2px #444; */
   background: rgb(240, 240, 240);
   color: #213547;
 }
@@ -282,7 +294,6 @@ p {
   border-radius: 4px;
   font-size: 1em;
   margin-left: 2em;
-  /* margin-bottom: 1em; */
   width: 70%;
 }
 .contact-form button {
@@ -303,6 +314,7 @@ p {
   border-top: solid 2px #444;
   color: #888;
   background: #242424;
+  margin-top: auto;
 }
 
 /* Pets component  */
@@ -375,7 +387,6 @@ p {
   position: relative;
 }
 .pet-list .cart-button:hover img {
-  /* filter: brightness(0.8); */
   scale: 1.1;
 }
 .pet-list .cart {
@@ -391,15 +402,13 @@ p {
   color: #000000;
   padding: 2em;
   gap: 1.5em;
-  height: 83vh;
 }
 .pet-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3em;
+  gap: 4em;
   align-items: stretch;
   padding: 2em;
-  min-height: 600px;
 }
 .pet-details .left-section {
   display: flex;
@@ -409,7 +418,7 @@ p {
 .pet-details .right-section {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 0.8em;
 }
 .pet-details img {
   width: 100%;
@@ -419,11 +428,109 @@ p {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.pet-details .sold {
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  font-size: 1.4rem;
+  background: rgb(173, 0, 0);
+  align-self: center;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+.pet-details .in-stock {
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  font-size: 1.4rem;
+  background: rgb(1, 146, 1);
+  align-self: center;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+  margin: 0;
+}
+.pet-details h1 {
+  margin: 0;
+  font-size: 4em;
+}
+.pet-details .price {
+  font-size: 3em;
+  font-weight: 600;
+  color: #b10000;
+  margin-bottom: 0;
+}
+.pet-details .margin-top {
+  margin-top: 0;
+}
+.pet-details .old-price {
+  text-decoration: line-through;
+  color: #777777;
+  font-size: 2.5em;
+  margin: 0;
+  font-weight: 400;
+}
+.pet-details .description {
+  font-size: 2rem;
+  color: #444444;
+  margin: 0;
+}
+.pet-details .petDetails {
+  font-size: 1.5rem;
+  color: #000000;
+}
+.pet-details .petDetails p {
+  margin: 0;
+}
+.pet-details .petDetails h3 {
+  margin: 0.5em 0 0.2em 0;
+  font-size: 1.5em;
+}
+.pet-details .petDetails span {
+  font-weight: bold;
+}
+.pet-details .bottom h3 {
+  margin: 0.5em 0 0.2em 0;
+  font-size: 2em;
+}
+.pet-details .bottom p {
+  font-size: 1.5rem;
+  color: #000000;
+}
+.pet-details .bottom span {
+  font-weight: bold;
+}
+.pet-details .vaccinations p {
+  margin: 0;
+}
+.pet-details .vaccine {
+  font-weight: 400 !important;
+}
+.pet-details .top {
+  display: flex;
+  justify-content: space-between;
+}
+.pet-details .top button {
+  color: white;
+  background: rgb(2, 26, 163);
+  font-weight: bold;
+  padding: 0.8em;
+}
+.pet-details .top button:hover {
+  background: rgb(12, 0, 80);
+  border: none;
+}
+
 /* media queries */
 
 @media (max-width: 768px) {
   .pet-details {
     grid-template-columns: 1fr;
+    min-height: auto;
+    gap: 2em;
+  }
+
+  .pet-details .left-section {
+    max-height: 400px;
   }
 }
 
@@ -433,5 +540,9 @@ p {
   }
   .about-section p {
     font-size: 1.1rem;
+  }
+
+  .pet-details {
+    gap: 1.5em;
   }
 }
