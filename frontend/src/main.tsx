@@ -9,6 +9,7 @@ import Layout from './components/Layout.tsx';
 import Home from './pages/Home.tsx';
 import About from './pages/About.tsx';
 import Contact from './pages/Contact.tsx';
+import Login from './pages/Login.tsx';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/contact',
         element: <Contact />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
     ],
   },
