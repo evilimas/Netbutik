@@ -21,6 +21,9 @@ function Pet() {
     fetchPetDetails();
   }, [id]);
 
+  const status = petDetails?.sold ? 'Sold' : 'In Stock';
+  const price = petDetails?.newPrice ? petDetails.newPrice : petDetails?.price;
+
   return (
     <>
       <div className="pet-component">
@@ -39,22 +42,54 @@ function Pet() {
             />
           </div>
           <div className="right-section">
-            <h2>Name: {petDetails?.name}</h2>
-            <p>Species: {petDetails?.species}</p>
-            <p>Breed: {petDetails?.breed}</p>
-            <p>Age: {petDetails?.age} years</p>
-            <h3>Price: ${petDetails?.price}</h3>
-            <p>Description: {petDetails?.description}</p>
+            <div className="top">
+              <p className={petDetails?.sold ? 'sold' : 'in-stock'}>{status}</p>
+              <button>ADD TO CART</button>
+            </div>
+            <h1> {petDetails?.name}</h1>
+            {petDetails?.newPrice ? (
+              <h2 className="old-price">${petDetails.price}.00</h2>
+            ) : null}
+            <h3 className={`price ${petDetails?.newPrice ? 'margin-top' : ''}`}>
+              ${price}.00
+            </h3>
+            <p className="description">{petDetails?.description}</p>
+            <div className="petDetails">
+              <h3>Pet Details</h3>
+              <p>
+                <span>Species:</span> {petDetails?.species}
+              </p>
+              <p>
+                <span>Breed:</span> {petDetails?.breed}
+              </p>
+              <p>
+                <span>Age:</span> {petDetails?.age} years
+              </p>
+            </div>
+
             <div className="bottom">
               <h3>Medical Record</h3>
-              <p>Weight: {petDetails?.medicalRecord.weightKg} kg</p>
+              <p>
+                <span>Weight:</span> {petDetails?.medicalRecord.weightKg} kg
+              </p>
 
-              <p>Vaccinations:</p>
-              <ul>
+              <p>
+                <span>
+                  Vaccinations:{' '}
+                  {petDetails?.medicalRecord.vaccinations.map((vacine) => {
+                    return (
+                      <span className="vaccine" key={vacine}>
+                        {vacine},{' '}
+                      </span>
+                    );
+                  })}
+                </span>
+              </p>
+              {/* <div className="vaccinations">
                 {petDetails?.medicalRecord.vaccinations.map((vacine) => {
-                  return <li key={vacine}>{vacine}</li>;
+                  return <p key={vacine}>{vacine}</p>;
                 })}
-              </ul>
+              </div> */}
             </div>
           </div>
         </div>
