@@ -5,10 +5,12 @@ export type Pet = {
   breed: string;
   age: number;
   price: number;
+  newPrice?: number;
   description: string;
   medicalRecord: MedicalRecord;
   photo: string;
   sold: boolean;
+  onSale?: boolean;
 };
 type MedicalRecord = {
   vaccinations: string[];
@@ -22,9 +24,11 @@ export const pets: Pet[] = [
     name: 'Bella',
     species: 'Dog',
     breed: 'Border Collie',
-    description: 'A friendly and energetic dog.',
+    description: 'A friendly and energetic dog that loves to play fetch.',
     age: 3,
     price: 250,
+    newPrice: 200,
+    onSale: true,
     sold: false,
     medicalRecord: {
       vaccinations: ['Rabies', 'Distemper', 'Parvovirus'],
@@ -39,7 +43,7 @@ export const pets: Pet[] = [
     name: 'Milo',
     species: 'Cat',
     breed: 'Siamese',
-    description: 'A curious and playful cat.',
+    description: 'A curious and playful cat that loves to explore.',
     age: 2,
     price: 180,
     sold: false,
@@ -55,9 +59,12 @@ export const pets: Pet[] = [
     name: 'Thumper',
     species: 'Rabbit',
     breed: 'Mini Lop',
-    description: 'A gentle and cuddly rabbit.',
+    description:
+      'A gentle and cuddly rabbit for families and first time owners.',
     age: 1,
-    price: 60,
+    price: 80,
+    newPrice: 70,
+    onSale: true,
     sold: false,
     medicalRecord: {
       vaccinations: ['Myxomatosis'],
@@ -71,7 +78,7 @@ export const pets: Pet[] = [
     name: 'Charlie',
     species: 'Dog',
     breed: 'Labrador Retriever',
-    description: 'A loyal and friendly companion.',
+    description: 'A loyal and friendly companion that loves to play fetch.',
     age: 4,
     price: 300,
     sold: false,
@@ -87,7 +94,7 @@ export const pets: Pet[] = [
     name: 'Luna',
     species: 'Cat',
     breed: 'Maine Coon',
-    description: 'A large and sociable cat.',
+    description: 'A large and sociable cat that enjoys being around people.',
     age: 5,
     price: 220,
     sold: false,
@@ -103,7 +110,7 @@ export const pets: Pet[] = [
     name: 'Oscar',
     species: 'Dog',
     breed: 'Beagle',
-    description: 'A curious and playful dog.',
+    description: 'A curious and playful dog that loves to explore.',
     age: 2,
     price: 200,
     sold: false,
@@ -119,7 +126,7 @@ export const pets: Pet[] = [
     name: 'Clover',
     species: 'Rabbit',
     breed: 'Netherland Dwarf',
-    description: 'A small and energetic rabbit.',
+    description: 'A small and energetic rabbit that loves to hop around.',
     age: 2,
     price: 55,
     sold: false,
@@ -135,7 +142,7 @@ export const pets: Pet[] = [
     name: 'Rocky',
     species: 'Dog',
     breed: 'German Shepherd',
-    description: 'A strong and intelligent dog.',
+    description: 'A strong and intelligent dog that is loyal and protective.',
     age: 6,
     price: 350,
     sold: false,
@@ -152,7 +159,8 @@ export const pets: Pet[] = [
     name: 'Willow',
     species: 'Cat',
     breed: 'Bengal',
-    description: 'An active and affectionate cat.',
+    description:
+      'An active and affectionate cat that enjoys playing and cuddling.',
     age: 1,
     price: 250,
     sold: false,
@@ -169,7 +177,7 @@ export const pets: Pet[] = [
     name: 'Hazel',
     species: 'Rabbit',
     breed: 'Flemish Giant',
-    description: 'A gentle giant of a rabbit.',
+    description: 'A gentle giant of a rabbit that is calm and affectionate.',
     age: 4,
     price: 80,
     sold: false,
@@ -185,7 +193,7 @@ export const pets: Pet[] = [
     name: 'Buddy',
     species: 'Dog',
     breed: 'Golden Retriever',
-    description: 'A friendly and devoted dog.',
+    description: 'A friendly and devoted dog that loves to be around people.',
     age: 3,
     price: 320,
     sold: false,
@@ -201,7 +209,7 @@ export const pets: Pet[] = [
     name: 'Zara',
     species: 'Cat',
     breed: 'Persian',
-    description: 'A calm and loving cat.',
+    description: 'A calm and loving cat that enjoys quiet environments.',
     age: 7,
     price: 200,
     sold: false,
@@ -217,7 +225,8 @@ export const pets: Pet[] = [
     name: 'Max',
     species: 'Dog',
     breed: 'French Bulldog',
-    description: 'A charming and playful dog.',
+    description:
+      'A charming and playful dog that loves to be the center of attention.',
     age: 2,
     price: 270,
     sold: false,
@@ -234,7 +243,7 @@ export const pets: Pet[] = [
     name: 'Daisy',
     species: 'Rabbit',
     breed: 'English Angora',
-    description: 'A fluffy and affectionate rabbit.',
+    description: 'A fluffy and affectionate rabbit that loves to be groomed.',
     age: 3,
     price: 70,
     sold: false,
@@ -250,7 +259,7 @@ export const pets: Pet[] = [
     name: 'Simba',
     species: 'Cat',
     breed: 'Ragdoll',
-    description: 'A gentle and sociable cat.',
+    description: 'A gentle and sociable cat that enjoys quiet environments.',
     age: 4,
     price: 240,
     sold: false,
