@@ -7,6 +7,9 @@ function Pets() {
   const [data, setData] = useState<Pet[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [filters, setFilters] = useState<{ species?: string; search?: string }>(
+    {}
+  );
 
   const handleAddToCart = (pet: Pet, event: React.MouseEvent) => {
     event.preventDefault();
@@ -16,9 +19,13 @@ function Pets() {
   };
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(filters);
+
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/pets');
+        const response = await axios.get(
+          `http://localhost:8000/pets?${queryParams.toString()}`
+        );
         setData(response.data);
       } catch (err) {
         setError(err as Error);
@@ -28,7 +35,7 @@ function Pets() {
     };
 
     fetchData();
-  }, []);
+  }, [filters]);
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error.message}</p>;
 
@@ -39,7 +46,25 @@ function Pets() {
           <h2>Pets Page</h2>
           <p>Here you can find all our lovely pets!</p>
         </div>
-
+        <div className="filters">
+          View by species:
+          <select
+            value={filters.species || 'all'}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                species: e.target.value === 'all' ? undefined : e.target.value,
+              }))
+            }
+          >
+            <option value="">All</option>
+            <option value="dog">Dogs</option>
+            <option value="cat">Cats</option>
+            <option value="bird">Birds</option>
+            <option value="rabbit">Rabbits</option>
+          </select>
+          <input type="text" placeholder="search" />
+        </div>
         <div className="pet-list">
           {data && data.length > 0 ? (
             <>

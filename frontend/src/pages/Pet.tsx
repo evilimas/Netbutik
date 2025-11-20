@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { Pet } from '../types/petTypes';
 
-function Pet() {
+export default function Pet() {
   const { id } = useParams();
   const [petDetails, setPetDetails] = useState<Pet | null>(null);
 
@@ -97,5 +97,3 @@ function Pet() {
     </>
   );
 }
-
-export default Pet;
