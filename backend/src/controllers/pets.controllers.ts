@@ -22,6 +22,16 @@ export const getPets = (
       (pet: Pet): boolean => pet.species.toLowerCase() === species.toLowerCase()
     );
   }
+  if (breed) {
+    filteredPets = filteredPets.filter(
+      (pet: Pet): boolean => pet.breed.toLowerCase() === breed.toLowerCase()
+    );
+  }
+  if (age) {
+    filteredPets = filteredPets.filter(
+      (pet: Pet): boolean => pet.age.toString() === age
+    );
+  }
   if (sold) {
     filteredPets = filteredPets.filter(
       (pet: Pet): boolean => pet.sold === JSON.parse(sold)
