@@ -7,9 +7,34 @@ function Pets() {
   const [data, setData] = useState<Pet[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [filters, setFilters] = useState<{ species?: string; search?: string }>(
-    {}
-  );
+  const [filters, setFilters] = useState<{
+    species?: string;
+    breed?: string;
+    search?: string;
+  }>({});
+  const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(12);
+
+  // Get unique species and breeds from data
+  const uniqueSpecies = data
+    ? [...new Set(data.map((pet) => pet.species))]
+    : [];
+  const uniqueBreeds = data ? [...new Set(data.map((pet) => pet.breed))] : [];
+
+  const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
+
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data
+    ? data.slice(indexOfFirstItem, indexOfLastItem)
+    : [];
+
+  const paginate = (pageNumber: number) => setPage(pageNumber);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const handleAddToCart = (pet: Pet, event: React.MouseEvent) => {
     event.preventDefault();
@@ -19,12 +44,20 @@ function Pets() {
   };
 
   useEffect(() => {
+    // Clean filters object - remove undefined values
+    // const cleanFilters: Record<string, string> = {};
+    // Object.entries(filters).forEach(([key, value]) => {
+    //   if (value !== undefined && value !== '') {
+    //     cleanFilters[key] = value;
+    //   }
+    // });
+
     const queryParams = new URLSearchParams(filters);
 
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/pets?${queryParams.toString()}`
+          `http://localhost:8000/pets/?${queryParams}`
         );
         setData(response.data);
       } catch (err) {
@@ -36,8 +69,9 @@ function Pets() {
 
     fetchData();
   }, [filters]);
-  if (loading) return <p className="loading">Loading...</p>;
-  if (error) return <p className="error">Error: {error.message}</p>;
+
+  // if (loading) return <p className="loading">Loading...</p>;
+  // if (error) return <p className="error">Error: {error.message}</p>;
 
   return (
     <>
@@ -46,29 +80,67 @@ function Pets() {
           <h2>Pets Page</h2>
           <p>Here you can find all our lovely pets!</p>
         </div>
+        <div className="loading-container">
+          {loading && <p className="loading">Loading...</p>}
+        </div>
+        <div className="error-container">
+          {error && <p className="error">Error: {error.message}</p>}
+        </div>
         <div className="filters">
-          View by species:
-          <select
-            value={filters.species || 'all'}
-            onChange={(e) =>
-              setFilters((prev) => ({
-                ...prev,
-                species: e.target.value === 'all' ? undefined : e.target.value,
-              }))
-            }
-          >
-            <option value="">All</option>
-            <option value="dog">Dogs</option>
-            <option value="cat">Cats</option>
-            <option value="bird">Birds</option>
-            <option value="rabbit">Rabbits</option>
-          </select>
-          <input type="text" placeholder="search" />
+          <div className="select-inputs">
+            View by species:
+            <select
+              value={filters.species || ''}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  species: e.target.value || undefined,
+                }))
+              }
+            >
+              <option value="">All Species</option>
+              {uniqueSpecies.map((species) => (
+                <option key={species} value={species}>
+                  {species.charAt(0).toUpperCase() + species.slice(1)}s
+                </option>
+              ))}
+            </select>
+            <p>View by breed:</p>
+            <select
+              value={filters.breed || ''}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  breed: e.target.value || undefined,
+                }))
+              }
+            >
+              <option value="">All Breeds</option>
+              {uniqueBreeds.map((breed) => (
+                <option key={breed} value={breed}>
+                  {breed}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="search-input">
+            <input
+              type="text"
+              placeholder="search"
+              value={filters.search || ''}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  search: e.target.value || undefined,
+                }))
+              }
+            />
+          </div>
         </div>
         <div className="pet-list">
           {data && data.length > 0 ? (
             <>
-              {data.map((pet: Pet) => (
+              {currentItems.map((pet: Pet) => (
                 <div className="pet" key={pet.id}>
                   <Link to={`/pets/${pet.id}`}>
                     <img
@@ -106,6 +178,16 @@ function Pets() {
             <p>No pets found.</p>
           )}
         </div>
+        {/* Pagination controls */}
+        <nav>
+          <ul className="pagination">
+            {pageNumbers.map((number) => (
+              <li key={number} className={page === number ? 'active' : ''}>
+                <button onClick={() => paginate(number)}>{number}</button>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </>
   );
