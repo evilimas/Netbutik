@@ -227,7 +227,7 @@ p {
 .about-section {
   padding: 10em 4em;
   background-color: #f9f9f9;
-  background: url('./images/hero.jpg');
+  background: url('./images/hero1.png');
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -404,6 +404,63 @@ p {
 }
 .pet-list .cart {
   width: 40px;
+}
+
+.pet-section .pagination {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  gap: 1em;
+  padding: 0;
+}
+.pet-section .pagination li button {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.pet-section .pagination li button:hover {
+  text-decoration: underline;
+}
+
+.pet-section .pagination li button:active {
+  border: none;
+}
+
+.pet-section .pagination .active button {
+  font-weight: bold;
+  text-decoration: underline;
+  border: 3px solid #213547;
+}
+
+.pet-section .filters {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  gap: 2em;
+  padding: 0.8em;
+  margin-bottom: 1em;
+}
+
+.pet-section .filters select {
+  padding: 0.3em;
+  font-size: 1em;
+  border-radius: 4px;
+}
+.pet-section .select-inputs {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.pet-section .search-input {
+}
+.pet-section .search-input input {
+  padding: 0.4em;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 /* pet component */
