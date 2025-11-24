@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
 import type { Pet } from '../types/petTypes';
 
 function Pets() {
-  const [data, setData] = useState<Pet[] | null>(null);
+  const [allPets, setAllPets] = useState<Pet[] | null>(null);
+  const [filteredPets, setFilteredPets] = useState<Pet[] | null>(allPets);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [filters, setFilters] = useState<{
@@ -12,21 +13,52 @@ function Pets() {
     breed?: string;
     search?: string;
   }>({});
+
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(12);
 
-  // Get unique species and breeds from data
-  const uniqueSpecies = data
-    ? [...new Set(data.map((pet) => pet.species))]
-    : [];
-  const uniqueBreeds = data ? [...new Set(data.map((pet) => pet.breed))] : [];
+  // Helper functions for dropdown options
+  const getUniqueSpecies = () => {
+    if (!allPets) return [];
 
-  const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
+    const species: string[] = [];
+    allPets.forEach((pet) => {
+      if (!species.includes(pet.species)) {
+        species.push(pet.species);
+      }
+    });
+    return species;
+  };
 
+  const getUniqueBreeds = () => {
+    if (!allPets) return [];
+
+    let petsToCheck = allPets;
+
+    if (filters.species) {
+      petsToCheck = allPets.filter((pet) => pet.species === filters.species);
+    }
+
+    const breeds: string[] = [];
+    petsToCheck.forEach((pet) => {
+      if (!breeds.includes(pet.breed)) {
+        breeds.push(pet.breed);
+      }
+    });
+    return breeds;
+  };
+
+  const uniqueSpecies = getUniqueSpecies();
+  const uniqueBreeds = getUniqueBreeds();
+
+  // pagination logic
+  const totalPages = filteredPets
+    ? Math.ceil(filteredPets.length / itemsPerPage)
+    : 0;
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data
-    ? data.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems = filteredPets
+    ? filteredPets.slice(indexOfFirstItem, indexOfLastItem)
     : [];
 
   const paginate = (pageNumber: number) => setPage(pageNumber);
@@ -40,26 +72,14 @@ function Pets() {
     event.preventDefault();
     event.stopPropagation();
     console.log('Added to cart:', pet.name);
-    // Add your cart logic here
   };
 
+  //  fetch all pets
   useEffect(() => {
-    // Clean filters object - remove undefined values
-    // const cleanFilters: Record<string, string> = {};
-    // Object.entries(filters).forEach(([key, value]) => {
-    //   if (value !== undefined && value !== '') {
-    //     cleanFilters[key] = value;
-    //   }
-    // });
-
-    const queryParams = new URLSearchParams(filters);
-
-    const fetchData = async () => {
+    const fetchAllPets = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/pets/?${queryParams}`
-        );
-        setData(response.data);
+        const response = await axios.get('http://localhost:8000/pets/');
+        setAllPets(response.data);
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -67,11 +87,42 @@ function Pets() {
       }
     };
 
-    fetchData();
-  }, [filters]);
+    fetchAllPets();
+  }, []);
 
-  // if (loading) return <p className="loading">Loading...</p>;
-  // if (error) return <p className="error">Error: {error.message}</p>;
+  // filter pets whenever filters change
+  useEffect(() => {
+    function filterPets(
+      allPets: Pet[],
+      filters: { species?: string; breed?: string; search?: string }
+    ): Pet[] {
+      let result = allPets;
+
+      if (filters.species) {
+        result = result.filter((pet) => pet.species === filters.species);
+      }
+
+      if (filters.breed) {
+        result = result.filter((pet) => pet.breed === filters.breed);
+      }
+
+      if (filters.search) {
+        result = result.filter((pet) =>
+          pet.name
+            .toLocaleLowerCase()
+            .includes(filters.search?.toLocaleLowerCase() || '')
+        );
+      }
+
+      return result;
+    }
+
+    if (allPets) {
+      const filtered = filterPets(allPets, filters);
+      setFilteredPets(filtered);
+    }
+    setPage(1);
+  }, [filters, allPets]);
 
   return (
     <>
@@ -88,42 +139,59 @@ function Pets() {
         </div>
         <div className="filters">
           <div className="select-inputs">
-            View by species:
-            <select
-              value={filters.species || ''}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  species: e.target.value || undefined,
-                }))
-              }
-            >
-              <option value="">All Species</option>
-              {uniqueSpecies.map((species) => (
-                <option key={species} value={species}>
-                  {species.charAt(0).toUpperCase() + species.slice(1)}s
-                </option>
-              ))}
-            </select>
-            <p>View by breed:</p>
-            <select
-              value={filters.breed || ''}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  breed: e.target.value || undefined,
-                }))
-              }
-            >
-              <option value="">All Breeds</option>
-              {uniqueBreeds.map((breed) => (
-                <option key={breed} value={breed}>
-                  {breed}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="search-input">
+            <div className="species-filter">
+              <p>View by species:</p>
+              <select
+                value={filters.species || ''}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    species: e.target.value || undefined,
+                    breed: undefined, // Clear breed when species changes
+                  }))
+                }
+              >
+                <option value="">All Species</option>
+                {uniqueSpecies.map((species) => (
+                  <option key={species} value={species}>
+                    {species.charAt(0).toUpperCase() + species.slice(1)}s
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="breed-filter">
+              <p>View by breed:</p>
+              <select
+                value={filters.breed || ''}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    breed: e.target.value || undefined,
+                  }))
+                }
+              >
+                <option value="">All Breeds</option>
+                {uniqueBreeds.map((breed) => (
+                  <option key={breed} value={breed}>
+                    {breed}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="pet-per-page">
+              <p>Pets per page: </p>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+              >
+                {[12, 18, 24, 36, 48].map((number) => (
+                  <option key={number} value={number}>
+                    {number}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <input
               type="text"
               placeholder="search"
@@ -138,7 +206,7 @@ function Pets() {
           </div>
         </div>
         <div className="pet-list">
-          {data && data.length > 0 ? (
+          {filteredPets && filteredPets.length > 0 ? (
             <>
               {currentItems.map((pet: Pet) => (
                 <div className="pet" key={pet.id}>
