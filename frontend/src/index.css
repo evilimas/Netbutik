@@ -341,7 +341,7 @@ p {
 }
 .pet-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 320px));
   gap: 2em;
   padding: 1.2em;
 }
@@ -359,6 +359,8 @@ p {
 }
 .pet-list .pet-img {
   width: 100%;
+  /* object-fit: cover; */
+  object-position: center;
   height: 200px;
   border-radius: 6px 6px 0 0;
 }
@@ -434,12 +436,20 @@ p {
 }
 
 .pet-section .filters {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  /* justify-content: space-between;
+  align-content: center; */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* align-items: center; */
   border: 1px solid #ccc;
-  gap: 2em;
+  gap: 3em;
   padding: 0.8em;
   margin-bottom: 1em;
+}
+.pet-section .filters p {
+  margin: 0;
+  /* font-size: 1.2rem;
+  font-weight: 500; */
 }
 
 .pet-section .filters select {
@@ -454,13 +464,22 @@ p {
   font-size: 1.2rem;
   font-weight: 500;
 }
-.pet-section .search-input {
-}
-.pet-section .search-input input {
+/* .pet-section .search-input {
+  align-items: end;
+  justify-content: end;
+} */
+.pet-section input {
   padding: 0.4em;
   font-size: 1em;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+.pet-per-page,
+.breed-filter,
+.species-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
 /* pet component */
