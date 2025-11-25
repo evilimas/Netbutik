@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
 import type { Pet } from '../types/petTypes';
@@ -137,64 +137,64 @@ function Pets() {
         <div className="error-container">
           {error && <p className="error">Error: {error.message}</p>}
         </div>
-        <div className="filters">
-          <div className="select-inputs">
-            <div className="species-filter">
-              <p>View by species:</p>
-              <select
-                value={filters.species || ''}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    species: e.target.value || undefined,
-                    breed: undefined, // Clear breed when species changes
-                  }))
-                }
-              >
-                <option value="">All Species</option>
-                {uniqueSpecies.map((species) => (
-                  <option key={species} value={species}>
-                    {species.charAt(0).toUpperCase() + species.slice(1)}s
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="breed-filter">
-              <p>View by breed:</p>
-              <select
-                value={filters.breed || ''}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    breed: e.target.value || undefined,
-                  }))
-                }
-              >
-                <option value="">All Breeds</option>
-                {uniqueBreeds.map((breed) => (
-                  <option key={breed} value={breed}>
-                    {breed}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="pet-per-page">
-              <p>Pets per page: </p>
-              <select
-                value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
-              >
-                {[12, 18, 24, 36, 48].map((number) => (
-                  <option key={number} value={number}>
-                    {number}
-                  </option>
-                ))}
-              </select>
-            </div>
 
+        <div className="select-inputs filters">
+          <div className="species-filter">
+            <p>View by species:</p>
+            <select
+              value={filters.species || ''}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  species: e.target.value || undefined,
+                  breed: undefined,
+                }))
+              }
+            >
+              <option value="">All Species</option>
+              {uniqueSpecies.map((species) => (
+                <option key={species} value={species}>
+                  {species.charAt(0).toUpperCase() + species.slice(1)}s
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="breed-filter">
+            <p>View by breed:</p>
+            <select
+              value={filters.breed || ''}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  breed: e.target.value || undefined,
+                }))
+              }
+            >
+              <option value="">All Breeds</option>
+              {uniqueBreeds.map((breed) => (
+                <option key={breed} value={breed}>
+                  {breed}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="pet-per-page">
+            <p>Pets per page: </p>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            >
+              {[12, 18, 24, 36, 48].map((number) => (
+                <option key={number} value={number}>
+                  {number}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="search-input">
             <input
               type="text"
-              placeholder="search"
+              placeholder="search by name"
               value={filters.search || ''}
               onChange={(e) =>
                 setFilters((prev) => ({
@@ -205,6 +205,7 @@ function Pets() {
             />
           </div>
         </div>
+
         <div className="pet-list">
           {filteredPets && filteredPets.length > 0 ? (
             <>
