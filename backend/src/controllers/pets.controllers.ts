@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import type { Pet } from '../data/pets';
 import { pets } from '../data/pets';
+import { getDBConection } from '../db/db';
 
 type PetQueryParams = {
   species?: string;
@@ -62,5 +63,34 @@ export const getPetById = (
     res.json(pet);
   } else {
     res.status(404).json({ message: 'Pet not found' });
+  }
+};
+
+export const getBreeds = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const db = await getDBConection();
+    const breedRows = await db.all('SELECT DISTINCT breed from pets');
+    console.log(breedRows);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch breeds',
+      details: (error as Error).message,
+    });
+  }
+};
+
+export const getSpecies = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const db = await getDBConection();
+    const speciesRows = await db.all('SELECT DISTINCT species from pets');
+    console.log(speciesRows);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch species',
+      details: (error as Error).message,
+    });
   }
 };
