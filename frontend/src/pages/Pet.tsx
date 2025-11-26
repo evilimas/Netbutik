@@ -1,11 +1,11 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import type { Pet } from '../types/petTypes';
+import type { PetQ } from '../types/petTypes';
 
 export default function Pet() {
   const { id } = useParams();
-  const [petDetails, setPetDetails] = useState<Pet | null>(null);
+  const [petDetails, setPetDetails] = useState<PetQ | null>(null);
 
   useEffect(() => {
     const fetchPetDetails = async () => {
@@ -70,26 +70,15 @@ export default function Pet() {
             <div className="bottom">
               <h3>Medical Record</h3>
               <p>
-                <span>Weight:</span> {petDetails?.medicalRecord.weightKg} kg
+                <span>Weight:</span> {petDetails?.weightKg} kg
               </p>
 
               <p>
                 <span>
                   Vaccinations:{' '}
-                  {petDetails?.medicalRecord.vaccinations.map((vacine) => {
-                    return (
-                      <span className="vaccine" key={vacine}>
-                        {vacine},{' '}
-                      </span>
-                    );
-                  })}
+                  <span className="vaccine">{petDetails?.vaccinations}</span>
                 </span>
               </p>
-              {/* <div className="vaccinations">
-                {petDetails?.medicalRecord.vaccinations.map((vacine) => {
-                  return <p key={vacine}>{vacine}</p>;
-                })}
-              </div> */}
             </div>
           </div>
         </div>
