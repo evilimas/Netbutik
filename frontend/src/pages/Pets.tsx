@@ -1,32 +1,27 @@
 import { useEffect, useState } from 'react';
-// import axios from 'axios';
 import { Link } from 'react-router';
-import type { PetQ } from '../types/petTypes';
+import type { PetQ, PetFilter } from '../types/petTypes';
 import { breeds, species, pets } from '../services/petServices';
 
 function Pets() {
+  // state variables
+
   const [allPets, setAllPets] = useState<PetQ[] | null>(null);
   const [filteredPets, setFilteredPets] = useState<PetQ[] | null>(allPets);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [filters, setFilters] = useState<{
-    species?: string;
-    breed?: string;
-    search?: string;
-  }>({});
+  const [filters, setFilters] = useState<PetFilter>({});
   const [breedsList, setBreedsList] = useState<string[]>([]);
   const [speciesList, setSpeciesList] = useState<string[]>([]);
-
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(12);
 
-  // Helper functions for dropdown options
+  // Helper functions for dropdown options to filter breeds based on selected species
 
   const getFilteredBreeds = () => {
     if (!filters.species || !allPets) {
       return breedsList;
     }
-
     const breedsForSpecies = allPets
       .filter((pet) => pet.species === filters.species)
       .map((pet) => pet.breed);
@@ -38,6 +33,7 @@ function Pets() {
   const uniqueBreeds = getFilteredBreeds();
 
   // pagination logic
+
   const totalPages = filteredPets
     ? Math.ceil(filteredPets.length / itemsPerPage)
     : 0;
@@ -46,13 +42,13 @@ function Pets() {
   const currentItems = filteredPets
     ? filteredPets.slice(indexOfFirstItem, indexOfLastItem)
     : [];
-
   const paginate = (pageNumber: number) => setPage(pageNumber);
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+
   // cart button logic
 
   const handleAddToCart = (pet: PetQ, event: React.MouseEvent) => {
@@ -62,6 +58,7 @@ function Pets() {
   };
 
   // fetch breeds and species for dropdown
+
   useEffect(() => {
     const fetchBreedsAndSpecies = async () => {
       const speciesData = await species();
@@ -73,6 +70,7 @@ function Pets() {
   }, []);
 
   //  fetch all pets
+
   useEffect(() => {
     const fetchAllPets = async () => {
       try {
@@ -89,11 +87,9 @@ function Pets() {
   }, []);
 
   // filter pets whenever filters change
+
   useEffect(() => {
-    function filterPets(
-      allPets: PetQ[],
-      filters: { species?: string; breed?: string; search?: string }
-    ): PetQ[] {
+    function filterPets(allPets: PetQ[], filters: PetFilter): PetQ[] {
       let result = allPets;
 
       if (filters.species) {
@@ -108,10 +104,17 @@ function Pets() {
       }
 
       if (filters.search) {
-        result = result.filter((pet) =>
-          pet.name
-            .toLocaleLowerCase()
-            .includes(filters.search?.toLocaleLowerCase() || '')
+        result = result.filter(
+          (pet) =>
+            pet.name
+              .toLocaleLowerCase()
+              .includes(filters.search?.toLocaleLowerCase() || '') ||
+            pet.breed
+              .toLocaleLowerCase()
+              .includes(filters.search?.toLocaleLowerCase() || '') ||
+            pet.species
+              .toLocaleLowerCase()
+              .includes(filters.search?.toLocaleLowerCase() || '')
         );
       }
 
@@ -127,6 +130,7 @@ function Pets() {
 
   return (
     <>
+      {/* header */}
       <div className="pet-section">
         <div className="pet-heading">
           <h2>Pets Page</h2>

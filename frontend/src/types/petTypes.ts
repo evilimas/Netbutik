@@ -18,7 +18,6 @@ type MedicalRecord = {
   microchipId: string | null;
 };
 
-
 type PetQ = {
   id: number;
   name: string;
@@ -34,6 +33,12 @@ type PetQ = {
   vaccinations: string;
   weightKg: number;
   microchipId: string | null;
-}
+};
 
-export type { Pet, MedicalRecord, PetQ };
+type PetFilter = {
+  species?: string;
+  breed?: string;
+  search?: string;
+};
+
+export type { Pet, MedicalRecord, PetQ, PetFilter };
