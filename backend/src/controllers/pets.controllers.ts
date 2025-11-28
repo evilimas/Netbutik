@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import type { Pet } from '../data/pets';
 
 import { getDBConection } from '../db/db';
 
@@ -14,7 +15,7 @@ type PetQueryParams = {
 
 export const getPets = async (
   req: Request<{}, unknown, {}, PetQueryParams>,
-  res: Response
+  res: Response<{ message: string } | Pet[]>
 ): Promise<void> => {
   try {
     const db = await getDBConection();
@@ -41,7 +42,7 @@ export const getPets = async (
       params.push(searchPattern, searchPattern, searchPattern);
     }
 
-    const pets = await db.all(query, params);
+    const pets: Pet[] = await db.all(query, params);
     res.json(pets);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
@@ -83,13 +84,16 @@ export const getPets = async (
 
 export const getPetById = async (
   req: Request<{ id: string }>,
-  res: Response<{ message: string }>
+  res: Response<{ message: string } | Pet>
 ): Promise<void> => {
   const { id } = req.params;
 
   try {
     const db = await getDBConection();
-    const pet = await db.get('SELECT * FROM pets WHERE id = ?', [id]);
+    const pet: Pet | undefined = await db.get(
+      'SELECT * FROM pets WHERE id = ?',
+      [id]
+    );
     res.json(pet);
   } catch (error) {
     res.status(500).json({ message: 'failed to fetch pet with id ' + id });
