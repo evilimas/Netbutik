@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
+import type { Session } from 'express-session';
 import { getDBConection } from '../db/db';
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
 
 type RegisterQueryParams = {
   name: string;
@@ -8,9 +10,10 @@ type RegisterQueryParams = {
   email: string;
   password: string;
 };
-
 export async function registerUser(
-  req: Request<{}, unknown, RegisterQueryParams>,
+  req: Request<{}, {}, RegisterQueryParams> & {
+    session: Session & { userId?: number };
+  },
   res: Response<{ message: string }>
 ) {
   let { name, username, email, password } = req.body;
@@ -45,10 +48,18 @@ export async function registerUser(
         .status(400)
         .json({ message: 'User with given email or username already exists' });
     }
+    const hashed = await bcrypt.hash(password, 10);
+
     const result = await db.run(
       `INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)`,
-      [name, username, email, password]
+      [name, username, email, hashed]
     );
+
+    req.session.userId = result.lastID;
+
     res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Registration failed' });
+  }
 }
