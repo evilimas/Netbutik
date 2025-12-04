@@ -44,6 +44,34 @@ function Login() {
     }
   }
 
+  async function Login(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+
+    try {
+      const res = await fetch('http://localhost:8000/pets/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: userNameLogin,
+          password: passwordLogin,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log('Login successful:', data);
+        window.location.href = '/';
+      } else {
+        setError(data.message || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setError('Login failed. Please try again.');
+    }
+  }
+
   return (
     <div className="login-component">
       {page === 'login' && (
@@ -68,7 +96,9 @@ function Login() {
               onChange={(e) => setPasswordLogin(e.target.value)}
               required
             />
-            <button type="submit">Login</button>
+            <button type="submit" onClick={Login}>
+              Login
+            </button>
             {error && <p className="error-message">{error}</p>}
           </form>
           <div className="switch-page">
