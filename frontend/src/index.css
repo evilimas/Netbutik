@@ -107,6 +107,13 @@ button:focus-visible {
   display: flex;
   gap: 1em;
 }
+.welcome-message {
+  font-size: 1.2em;
+  align-self: center;
+  margin: 0;
+  font-weight: 500;
+  color: #213547;
+}
 
 /* --- home page---- */
 /* hero section */
