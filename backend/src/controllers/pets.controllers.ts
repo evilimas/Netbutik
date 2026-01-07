@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import type { Pet } from '../data/pets';
 
-import { getDBConection } from '../db/db';
+import { getDBConnection } from '../db/db';
 
 type PetQueryParams = {
   species?: string;
@@ -18,7 +18,7 @@ export const getPets = async (
   res: Response<{ message: string } | Pet[]>
 ): Promise<void> => {
   try {
-    const db = await getDBConection();
+    const db = await getDBConnection();
     let query = 'SELECT * FROM pets';
     let params: string[] = [];
 
@@ -89,7 +89,7 @@ export const getPetById = async (
   const { id } = req.params;
 
   try {
-    const db = await getDBConection();
+    const db = await getDBConnection();
     const pet: Pet | undefined = await db.get(
       'SELECT * FROM pets WHERE id = ?',
       [id]
@@ -113,7 +113,7 @@ export const getBreeds = async (
   res: Response<string[] | { error: string; details: string }>
 ): Promise<void> => {
   try {
-    const db = await getDBConection();
+    const db = await getDBConnection();
     const breedRows = await db.all('SELECT DISTINCT breed from pets');
     const breeds = breedRows.map((row) => row.breed);
     res.json(breeds);
@@ -130,7 +130,7 @@ export const getSpecies = async (
   res: Response<string[] | { error: string; details: string }>
 ): Promise<void> => {
   try {
-    const db = await getDBConection();
+    const db = await getDBConnection();
     const speciesRows = await db.all('SELECT DISTINCT species from pets');
     const species = speciesRows.map((row) => row.species);
     res.json(species);

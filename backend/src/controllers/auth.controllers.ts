@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import type { Session } from 'express-session';
-import { getDBConection } from '../db/db';
+import { getDBConnection } from '../db/db';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
@@ -38,7 +38,7 @@ export async function registerUser(
   console.log(req.body);
 
   try {
-    const db = await getDBConection();
+    const db = await getDBConnection();
     const existing = await db.get(
       `SELECT id FROM users WHERE email = ? OR username = ?`,
       [email, username]
