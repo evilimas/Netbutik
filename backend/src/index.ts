@@ -4,6 +4,7 @@ import cors from 'cors';
 import { petRouter } from './routes/pets.routes';
 import { authRouter } from './routes/auth.routes';
 import session from 'express-session';
+import { meRouter } from './routes/me.routes';
 
 const PORT = process.env.PORT || 8000;
 const app: Express = express();
@@ -25,6 +26,7 @@ app.use(
 );
 app.use(cors());
 app.use('/pets', petRouter);
+app.use('/pets/auth/me', meRouter);
 app.use('/pets/auth', authRouter);
 
 app.use((req: Request, res: Response<{ message: string }>): void => {
