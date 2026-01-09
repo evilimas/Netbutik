@@ -63,3 +63,42 @@ export async function registerUser(
     res.status(500).json({ message: 'Registration failed' });
   }
 }
+
+export async function loginUser(
+  req: Request<{}, {}, { username: string; password: string }> & {
+    session: Session & { userId?: number };
+  },
+  res: Response<{ message: string }>
+) {
+  let { username, password } = req.body;
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ message: 'Username and password are required' });
+  }
+
+  username = username.trim();
+
+  try {
+    const db = await getDBConnection();
+    const user = await db.get('SELECT * FROM users WHERE username = ?', [
+      username,
+    ]);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    req.session.userId = user.id;
+
+    res.json({ message: 'Login successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Login failed' });
+  }
+}
