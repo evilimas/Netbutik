@@ -24,7 +24,12 @@ app.use(
     },
   })
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Your frontend URL
+    credentials: true, // Allow credentials
+  })
+);
 app.use('/pets', petRouter);
 app.use('/pets/auth/me', meRouter);
 app.use('/pets/auth', authRouter);
