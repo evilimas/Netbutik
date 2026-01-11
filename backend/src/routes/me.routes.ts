@@ -4,4 +4,4 @@ import type { Router } from 'express';
 
 export const meRouter: Router = express.Router();
 
-meRouter.get('/current', getCurrentUser);
+meRouter.get('/', getCurrentUser);
