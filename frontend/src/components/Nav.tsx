@@ -1,10 +1,46 @@
 import { NavLink, useNavigate } from 'react-router';
-import { displayLogedUser } from '../services/authServices';
+import { checkAuth, displayLogedUser } from '../services/authServices';
 import { useEffect, useState } from 'react';
+// const name = await checkAuth();
 
 function Nav() {
-  const [username, setUsername] = useState<string | null>('Guest');
+  const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/pets/auth/me', {
+          method: 'GET',
+          credentials: 'include', // Include cookies/session
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!res.ok) {
+          console.warn('Auth check failed:', res.status);
+          setUsername('Guest');
+          return false;
+        }
+
+        const user = await res.json();
+        if (!user.isLoggedIn) {
+          setUsername('Guest');
+          return false;
+        }
+
+        setUsername(user.name);
+        console.log('Nav username:', user.name);
+        // return true;
+      } catch (err) {
+        console.log(err, 'Auth check failed');
+        setUsername('Guest');
+        return false;
+      }
+    };
+    checkAuth();
+  }, []);
 
   // useEffect(() => {
   //   const fetchUsername = async () => {
@@ -17,6 +53,26 @@ function Nav() {
   //   };
   //   fetchUsername();
   // }, []);
+
+  // async function checkAuth() {
+  //   try {
+  //     const res = await fetch('/api/auth/me');
+
+  //     if (!res.ok) {
+  //       console.warn('Unexpected response:', res.status);
+  //       return false;
+  //     }
+
+  //     const user = await res.json();
+  //     if (!user.isLoggedIn) {
+  //       return false;
+  //     }
+  //     return user.name;
+  //   } catch (err) {
+  //     console.log(err, 'Auth check failed');
+  //     return false;
+  //   }
+  // }
 
   return (
     <nav className="navigation">

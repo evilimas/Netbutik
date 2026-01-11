@@ -27,4 +27,24 @@ const UserName = () => {
   return username;
 };
 
-export { displayLogedUser, UserName };
+const checkAuth = async () => {
+  try {
+    const res = await fetch('http://localhost:8000/pets/auth/me');
+
+    if (!res.ok) {
+      console.warn('Unexpected response:', res.status);
+      return false;
+    }
+
+    const user = await res.json();
+    if (!user.isLoggedIn) {
+      return false;
+    }
+    return user.name;
+  } catch (err) {
+    console.log(err, 'Auth check failed');
+    return false;
+  }
+};
+
+export { displayLogedUser, UserName, checkAuth };
