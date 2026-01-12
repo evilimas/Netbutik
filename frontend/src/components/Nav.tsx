@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router';
-import { checkAuth, displayLogedUser } from '../services/authServices';
 import { useEffect, useState } from 'react';
+// import { checkAuth, displayLogedUser } from '../services/authServices';
 // const name = await checkAuth();
 
 function Nav() {
@@ -92,7 +92,7 @@ function Nav() {
             Login
           </button>
         ) : (
-          <button className="login-button" onClick={() => navigate('/logout')}>
+          <button className="logout-button" onClick={() => navigate('/')}>
             Logout
           </button>
         )}
