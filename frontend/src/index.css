@@ -99,6 +99,12 @@ button:focus-visible {
   color: white;
   padding: 0.7em 1.2em;
 }
+.logout-button {
+  background-color: #213547;
+  color: white;
+  padding: 0.7em 1.2em;
+}
+.logout-button:hover,
 .login-button:hover {
   background-color: #00067c;
   cursor: pointer;
