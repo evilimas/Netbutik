@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 // import { checkAuth, displayLogedUser } from '../services/authServices';
 // const name = await checkAuth();
+// import { logout } from '../services/authServices';
 
 function Nav() {
   const [username, setUsername] = useState<string | null>(null);
@@ -32,7 +33,7 @@ function Nav() {
 
         setUsername(user.name);
         console.log('Nav username:', user.name);
-        // return true;
+        return true;
       } catch (err) {
         console.log(err, 'Auth check failed');
         setUsername('Guest');
@@ -41,6 +42,22 @@ function Nav() {
     };
     checkAuth();
   }, []);
+
+  async function logout() {
+    try {
+      const res = await fetch('http://localhost:8000/pets/auth/logout', {
+        method: 'GET',
+        credentials: 'include', // Include cookies/session
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      await navigate('/');
+      await setUsername('Guest');
+    } catch (err) {
+      console.log('failed to log out', err);
+    }
+  }
 
   // useEffect(() => {
   //   const fetchUsername = async () => {
@@ -92,7 +109,7 @@ function Nav() {
             Login
           </button>
         ) : (
-          <button className="logout-button" onClick={() => navigate('/')}>
+          <button className="logout-button" onClick={() => logout()}>
             Logout
           </button>
         )}
