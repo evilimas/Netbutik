@@ -102,3 +102,12 @@ export async function loginUser(
     res.status(500).json({ message: 'Login failed' });
   }
 }
+
+export async function logoutUser(
+  req: Request,
+  res: Response<{ message: string }>
+) {
+  req.session.destroy(() => {
+    res.json({ message: 'Logged out successfully' });
+  });
+}
