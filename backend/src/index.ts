@@ -5,6 +5,7 @@ import { petRouter } from './routes/pets.routes';
 import { authRouter } from './routes/auth.routes';
 import session from 'express-session';
 import { meRouter } from './routes/me.routes';
+import { cartRouter } from './routes/cart.routes';
 
 const PORT = process.env.PORT || 8000;
 const app: Express = express();
@@ -33,6 +34,7 @@ app.use(
 app.use('/pets', petRouter);
 app.use('/pets/auth/me', meRouter);
 app.use('/pets/auth', authRouter);
+app.use('/pets/cart', cartRouter);
 
 app.use((req: Request, res: Response<{ message: string }>): void => {
   res.status(404).json({ message: 'Endpoint not found' });
