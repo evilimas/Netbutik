@@ -1,22 +1,26 @@
-import { getDBConnection } from '../db/db.js';
+import { getDBConnection } from '../db/db';
 import type { Request, Response } from 'express';
 
 export async function addToCart(
-  req: Request & { session: { userId: number } },
+  req: Request & { session: { userId?: number } },
   res: Response<{ message: string } | void>
 ) {
   const db = await getDBConnection();
 
-  const productId = parseInt(req.body.productId);
+  const petId = parseInt(req.body.petId);
 
-  if (isNaN(productId)) {
-    return res.status(400).json({ message: 'Invalid product ID' });
+  if (isNaN(petId)) {
+    return res.status(400).json({ message: 'Invalid pet ID' });
   }
   const userId = req.session.userId;
 
+  if (!userId) {
+    return res.status(401).json({ message: 'Not autenticated' });
+  }
+
   const existing = await db.get(
-    'SELECT * from cart_items WHERE user_id = ? AND product_id = ?',
-    [userId, productId]
+    'SELECT * from cart_items WHERE user_id = ? AND pet_id = ?',
+    [userId, petId]
   );
 
   if (existing) {
@@ -25,9 +29,9 @@ export async function addToCart(
     ]);
   } else {
     await db.run(
-      'INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?,?,1)',
-      [userId, productId]
+      'INSERT INTO cart_items (user_id, pet_id, quantity) VALUES (?,?,1)',
+      [userId, petId]
     );
   }
-  res.json({ message: 'Product added to cart' });
+  res.json({ message: 'Pet added to cart' });
 }
