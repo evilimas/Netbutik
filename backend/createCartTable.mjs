@@ -12,10 +12,10 @@ async function createTable() {
             CREATE TABLE cart_items (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                   user_id INTEGER NOT NULL,
-                  product_id INTEGER NOT NULL,
+                  pet_id INTEGER NOT NULL,
                   quantity INTEGER NOT NULL DEFAULT 1,
                   FOREIGN KEY (user_id) REFERENCES users(id),
-                  FOREIGN KEY (product_id) REFERENCES products(id)
+                  FOREIGN KEY (pet_id) REFERENCES pets(id)
             );
      
      `);
