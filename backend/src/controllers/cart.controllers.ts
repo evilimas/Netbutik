@@ -84,3 +84,44 @@ export async function getAll(
 
   res.json({ items: items });
 }
+
+export async function deleteItem(
+  req: Request<{ id: string }> & { session: { userId?: number } },
+  res: Response<{ message: string }>
+) {
+  const db = await getDBConnection();
+
+  const cartItemId = parseInt(req.params.id, 10);
+  const userId = req.session.userId;
+
+  if (isNaN(cartItemId)) {
+    return res.status(400).json({ message: 'Invalid cart item ID' });
+  }
+
+  const item = await db.get(
+    'SELECT quantity FROM cart_items WHERE id = ? AND user_id = ?',
+    [cartItemId, userId]
+  );
+
+  if (!item) {
+    return res.status(400).json({ message: 'Cart item not found' });
+  }
+
+  await db.run('DELETE FROM cart_items WHERE id =? AND user_id = ?', [
+    cartItemId,
+    userId,
+  ]);
+
+  res.status(204).send();
+}
+export async function deleteAll(
+  req: Request & { session: { userId?: number } },
+  res: Response<{ message: string }>
+) {
+  const db = await getDBConnection();
+  const userId = req.session.userId;
+
+  await db.run('DELETE FROM cart_items WHERE user_id = ?', [userId]);
+
+  res.status(204).send();
+}
