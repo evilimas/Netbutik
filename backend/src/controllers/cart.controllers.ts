@@ -71,9 +71,9 @@ export async function getAll(
   const db = await getDBConnection();
   const userId = req.session.userId;
 
-  if (!userId) {
-    return res.status(401).json({ message: 'Not autenticated' });
-  }
+  // if (!userId) {
+  //   return res.status(401).json({ message: 'Not autenticated' });
+  // }
   const items = await db.all(
     `SELECT ci.id AS cartItemId, ci.quantity, p.name, p.species, p.breed, p.age, p.price
     FROM cart_items ci
