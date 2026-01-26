@@ -1,11 +1,13 @@
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
+import { cartCount } from '../services/cartServices';
 // import { checkAuth, displayLogedUser } from '../services/authServices';
 // const name = await checkAuth();
 // import { logout } from '../services/authServices';
 
 function Nav() {
   const [username, setUsername] = useState<string | null>(null);
+  const [cartCountValue, setCartCountValue] = useState<number>(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +43,20 @@ function Nav() {
       }
     };
     checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const response = await cartCount();
+        setCartCountValue(response.count);
+        console.log('Cart count fetched:', response.count);
+      } catch (err) {
+        console.error('Error fetching cart count:', err);
+        setCartCountValue(0);
+      }
+    };
+    fetchCartCount();
   }, []);
 
   async function logout() {
@@ -114,7 +130,7 @@ function Nav() {
           </button>
         )}
         <button className="login-button" onClick={() => navigate('/cart')}>
-          Cart
+          Cart <span>{cartCountValue}</span>
         </button>
       </div>
     </nav>
