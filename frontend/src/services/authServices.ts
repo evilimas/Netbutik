@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 // import { useEffect, useState } from 'react';
 
 // const displayLogedUser = async () => {
@@ -49,11 +49,10 @@
 
 export async function logout() {
   try {
-    const res = await fetch('http://localhost:8000/pets/auth/logout/');
+    const response = await axios.get('http://localhost:8000/pets/auth/logout/');
     window.location.href = '/';
+    return response.data;
   } catch (err) {
     console.log('failed to log out', err);
   }
 }
-
-// export { displayLogedUser, UserName, checkAuth };
