@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import type { PetQ, PetFilter } from '../types/petTypes';
 import { breeds, species, pets } from '../services/petServices';
+import { addToCart } from '../services/cartServices';
 
 function Pets() {
   // state variables
@@ -54,7 +55,8 @@ function Pets() {
   const handleAddToCart = (pet: PetQ, event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('Added to cart:', pet.name);
+    addToCart(pet.id);
+    console.log('Added to cart:', pet.name, pet.id);
   };
 
   // fetch breeds and species for dropdown
@@ -114,7 +116,7 @@ function Pets() {
               .includes(filters.search?.toLocaleLowerCase() || '') ||
             pet.species
               .toLocaleLowerCase()
-              .includes(filters.search?.toLocaleLowerCase() || '')
+              .includes(filters.search?.toLocaleLowerCase() || ''),
         );
       }
 
