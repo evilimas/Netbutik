@@ -1,9 +1,7 @@
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { cartCount } from '../services/cartServices';
-// import { checkAuth, displayLogedUser } from '../services/authServices';
-// const name = await checkAuth();
-// import { logout } from '../services/authServices';
+// import { checkAuth, displayLogedUser, logout } from '../services/authServices';
 
 function Nav() {
   const [username, setUsername] = useState<string | null>(null);
@@ -57,7 +55,7 @@ function Nav() {
       }
     };
     fetchCartCount();
-  }, []);
+  }, [cartCountValue]);
 
   async function logout() {
     try {
