@@ -31,7 +31,7 @@ export const addToCart = async (petId: number) => {
   try {
     const response = await axios.post(
       `http://localhost:8000/pets/cart/add`,
-      { petId }, // Data as second parameter
+      { petId },
       {
         withCredentials: true,
         headers: {
