@@ -55,7 +55,7 @@ function Nav() {
       }
     };
     fetchCartCount();
-  }, [cartCountValue]);
+  }, [setCartCountValue]);
 
   async function logout() {
     try {

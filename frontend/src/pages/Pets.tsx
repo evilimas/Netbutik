@@ -52,10 +52,10 @@ function Pets() {
 
   // cart button logic
 
-  const handleAddToCart = (pet: PetQ, event: React.MouseEvent) => {
+  const handleAddToCart = async (pet: PetQ, event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    addToCart(pet.id);
+    await addToCart(pet.id);
     console.log('Added to cart:', pet.name, pet.id);
   };
 

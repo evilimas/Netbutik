@@ -11,6 +11,7 @@ import About from './pages/About.tsx';
 import Contact from './pages/Contact.tsx';
 import Login from './pages/Login.tsx';
 import Cart from './pages/Cart.tsx';
+import { CartCountProvider } from './context/cartCountContext.ts';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <CartCountProvider>
+      <RouterProvider router={router} />
+    </CartCountProvider>
   </StrictMode>
 );
