@@ -9,11 +9,12 @@ type CartItem = {
   breed: string;
   age: number;
   price: number;
+  photo: string;
 };
 
 export async function addToCart(
   req: Request & { session: { userId?: number } },
-  res: Response<{ message: string } | void>
+  res: Response<{ message: string } | void>,
 ) {
   const db = await getDBConnection();
 
@@ -30,7 +31,7 @@ export async function addToCart(
 
   const existing = await db.get(
     'SELECT * from cart_items WHERE user_id = ? AND pet_id = ?',
-    [userId, petId]
+    [userId, petId],
   );
 
   if (existing) {
@@ -40,7 +41,7 @@ export async function addToCart(
   } else {
     await db.run(
       'INSERT INTO cart_items (user_id, pet_id, quantity) VALUES (?,?,1)',
-      [userId, petId]
+      [userId, petId],
     );
   }
   res.json({ message: 'Pet added to cart' });
@@ -48,7 +49,7 @@ export async function addToCart(
 
 export async function getCartCount(
   req: Request & { session: { userId?: number } },
-  res: Response<{ count: number | null } | { message: string }>
+  res: Response<{ count: number | null } | { message: string }>,
 ) {
   const db = await getDBConnection();
   const userId = req.session.userId;
@@ -58,7 +59,7 @@ export async function getCartCount(
   }
   const result = await db.get(
     `SELECT SUM(quantity) AS totalItems FROM cart_items WHERE user_id = ?`,
-    [userId]
+    [userId],
   );
 
   res.json({ count: result.totalItems || 0 });
@@ -66,7 +67,7 @@ export async function getCartCount(
 
 export async function getAll(
   req: Request & { session: { userId?: number } },
-  res: Response<{ items: CartItem[] } | { message: string }>
+  res: Response<{ items: CartItem[] } | { message: string }>,
 ) {
   const db = await getDBConnection();
   const userId = req.session.userId;
@@ -75,11 +76,11 @@ export async function getAll(
   //   return res.status(401).json({ message: 'Not autenticated' });
   // }
   const items = await db.all(
-    `SELECT ci.id AS cartItemId, ci.quantity, p.name, p.species, p.breed, p.age, p.price
+    `SELECT ci.id AS cartItemId, ci.quantity, p.name, p.species, p.breed, p.age, p.price, p.photo
     FROM cart_items ci
     JOIN pets p ON p.id = ci.pet_id
     WHERE ci.user_id = ?`,
-    [userId]
+    [userId],
   );
 
   res.json({ items: items });
@@ -87,7 +88,7 @@ export async function getAll(
 
 export async function deleteItem(
   req: Request<{ id: string }> & { session: { userId?: number } },
-  res: Response<{ message: string }>
+  res: Response<{ message: string }>,
 ) {
   const db = await getDBConnection();
 
@@ -100,7 +101,7 @@ export async function deleteItem(
 
   const item = await db.get(
     'SELECT quantity FROM cart_items WHERE id = ? AND user_id = ?',
-    [cartItemId, userId]
+    [cartItemId, userId],
   );
 
   if (!item) {
@@ -116,7 +117,7 @@ export async function deleteItem(
 }
 export async function deleteAll(
   req: Request & { session: { userId?: number } },
-  res: Response<{ message: string }>
+  res: Response<{ message: string }>,
 ) {
   const db = await getDBConnection();
   const userId = req.session.userId;
