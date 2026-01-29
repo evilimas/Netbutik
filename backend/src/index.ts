@@ -23,18 +23,18 @@ app.use(
       secure: false,
       sameSite: 'lax',
     },
-  })
+  }),
 );
 app.use(
   cors({
     origin: 'http://localhost:5173', //  frontend URL
     credentials: true, // Allow credentials
-  })
+  }),
 );
-app.use('/pets', petRouter);
 app.use('/pets/auth/me', meRouter);
 app.use('/pets/auth', authRouter);
 app.use('/pets/cart', cartRouter);
+app.use('/pets', petRouter);
 
 app.use((req: Request, res: Response<{ message: string }>): void => {
   res.status(404).json({ message: 'Endpoint not found' });
