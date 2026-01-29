@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const cartItems = async () => {
+export const getCartItems = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/pets/cart/', {
+    const response = await axios.get('http://localhost:8000/pets/cart', {
       withCredentials: true,
     });
-    return response.data;
+    return response.data.items;
   } catch (error) {
     console.error('Error fetching cart items:', error);
     return [];
