@@ -16,19 +16,34 @@ function Cart() {
       }
     };
     fetchCartItems();
-  }, []); // Remove cartItems.length dependency to avoid infinite re-renders
+  }, []);
 
   return (
     <div className="cart-page">
       <h1>Cart Page</h1>
-      <p>Your cart is currently empty.</p>
+      {cartItems.length === 0 && <p>Your cart is currently empty.</p>}
       <div className="cart-items">
         {cartItems.map((item) => (
           <div key={item.cartItemId} className="cart-item">
             <img src={item.photo} alt={item.name} width="100" />
             <div className="item-details">
-              <h2>{item.name}</h2>
+              <h2>
+                {item.species} : {item.name}
+              </h2>
               <p>Price: ${item.price}</p>
+            </div>
+            <div className="item-details">
+              <h2>Breed : {item.breed}</h2>
+              <p>Quantity: {item.quantity}</p>
+            </div>
+            <div className="item-details">
+              <button className="delete-button">
+                <img
+                  className="delete-icon"
+                  src="./images/delete.png"
+                  alt="Remove from cart"
+                />
+              </button>
             </div>
           </div>
         ))}
