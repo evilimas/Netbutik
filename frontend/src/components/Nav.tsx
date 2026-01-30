@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { cartCount } from '../services/cartServices';
+import axios from 'axios';
 // import { checkAuth, displayLogedUser, logout } from '../services/authServices';
 
 function Nav() {
@@ -59,15 +60,22 @@ function Nav() {
 
   async function logout() {
     try {
-      const res = await fetch('http://localhost:8000/pets/auth/logout', {
-        method: 'GET',
-        credentials: 'include', // Include cookies/session
-        headers: {
-          'Content-Type': 'application/json',
+      // const res = await fetch('http://localhost:8000/pets/auth/logout', {
+      //   method: 'GET',
+      //   credentials: 'include', // Include cookies/session
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      const response = await axios.get(
+        'http://localhost:8000/pets/auth/logout',
+        {
+          withCredentials: true,
         },
-      });
+      );
       await navigate('/');
       await setUsername('Guest');
+      return response.data;
     } catch (err) {
       console.log('failed to log out', err);
     }
