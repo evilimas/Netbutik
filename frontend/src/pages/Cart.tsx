@@ -48,6 +48,15 @@ function Cart() {
           </div>
         ))}
       </div>
+      <div className="total-amount">
+        <h2>
+          Total Amount: $
+          {cartItems.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0,
+          )}
+        </h2>
+      </div>
     </div>
   );
 }
