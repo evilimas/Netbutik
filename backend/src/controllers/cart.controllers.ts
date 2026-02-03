@@ -87,12 +87,12 @@ export async function getAll(
 }
 
 export async function deleteItem(
-  req: Request<{ id: string }> & { session: { userId?: number } },
+  req: Request<{ cartItemId: string }> & { session: { userId?: number } },
   res: Response<{ message: string }>,
 ) {
   const db = await getDBConnection();
 
-  const cartItemId = parseInt(req.params.id, 10);
+  const cartItemId = parseInt(req.params.cartItemId, 10);
   const userId = req.session.userId;
 
   if (isNaN(cartItemId)) {
