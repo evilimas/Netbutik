@@ -104,14 +104,34 @@ button:focus-visible {
   color: white;
   padding: 0.7em 1.2em;
 }
+.cart-button {
+  background: none;
+  color: red;
+  /* padding: 0.7em 1.2em; */
+  display: flex;
+  align-items: center;
+  /* gap: 0.5em; */
+  font-size: 1.2em;
+}
+.cart-button img {
+  width: 28px;
+  height: 28px;
+  margin-right: 0.3em;
+}
 .logout-button:hover,
 .login-button:hover {
   background-color: #00067c;
   cursor: pointer;
 }
-.navigation .buttons {
+.buttons {
   display: flex;
   gap: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+.buttons .right {
+  display: flex;
+  /* gap: 1em; */
 }
 .welcome-message {
   font-size: 1.2em;
@@ -691,7 +711,7 @@ p {
   color: #000000;
 }
 .cart-page h1 {
-  text-align: center;
+  text-align: left;
 }
 .cart-items {
   /* display: flex;
@@ -738,6 +758,21 @@ p {
 .cart-item .delete-button img {
   width: 24px;
   height: 24px;
+}
+.checkout-button {
+  background-color: #213547;
+  color: white;
+  padding: 1em 2em;
+  font-size: 1.5em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  /* display: block; */
+  /* margin: 2em auto; */
+}
+.checkout-button:hover {
+  background-color: #00067c;
+  cursor: pointer;
 }
 
 /* media queries */
