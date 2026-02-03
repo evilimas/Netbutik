@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import type { PetQ, PetFilter } from '../types/petTypes';
 import { breeds, species, pets } from '../services/petServices';
 import { addToCart } from '../services/cartServices';
+import { useCartCount } from '../context/cartCountContext';
 
 function Pets() {
   // state variables
@@ -16,6 +17,7 @@ function Pets() {
   const [speciesList, setSpeciesList] = useState<string[]>([]);
   const [page, setPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(12);
+  const { cartCount: cartCountValue, setCartCount } = useCartCount();
 
   // Helper functions for dropdown options to filter breeds based on selected species
 
@@ -57,6 +59,7 @@ function Pets() {
     event.stopPropagation();
     await addToCart(pet.id);
     console.log('Added to cart:', pet.name, pet.id);
+    setCartCount(cartCountValue + 1);
   };
 
   // fetch breeds and species for dropdown

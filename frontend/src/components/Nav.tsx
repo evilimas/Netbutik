@@ -1,12 +1,13 @@
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { cartCount } from '../services/cartServices';
+import { useCartCount } from '../context/cartCountContext';
 import axios from 'axios';
 // import { checkAuth, displayLogedUser, logout } from '../services/authServices';
 
 function Nav() {
   const [username, setUsername] = useState<string | null>(null);
-  const [cartCountValue, setCartCountValue] = useState<number>(0);
+  const { cartCount: cartCountValue, setCartCount } = useCartCount();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,15 +49,15 @@ function Nav() {
     const fetchCartCount = async () => {
       try {
         const response = await cartCount();
-        setCartCountValue(response.count);
+        setCartCount(response.count);
         console.log('Cart count fetched:', response.count);
       } catch (err) {
         console.error('Error fetching cart count:', err);
-        setCartCountValue(0);
+        setCartCount(0);
       }
     };
     fetchCartCount();
-  }, [setCartCountValue]);
+  }, [setCartCount]);
 
   async function logout() {
     try {
@@ -114,32 +115,38 @@ function Nav() {
   // }
 
   return (
-    <nav className="navigation">
-      <img className="logo" src="/images/logo.png" alt="" />
+    <>
+      <nav className="navigation">
+        <img className="logo" src="/images/logo.png" alt="" />
 
-      <ul>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/pets">Pets</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
-      </ul>
-
+        <ul>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/pets">Pets</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+        </ul>
+      </nav>
       <div className="buttons">
-        <p className="welcome-message">Welcome, {username}</p>
-        {username === 'Guest' ? (
-          <button className="login-button" onClick={() => navigate('/login')}>
-            Login
+        <div className="left">
+          <p className="welcome-message">Welcome, {username}</p>
+        </div>
+        <div className="right">
+          {username === 'Guest' ? (
+            <button className="login-button" onClick={() => navigate('/login')}>
+              Login
+            </button>
+          ) : (
+            <button className="logout-button" onClick={() => logout()}>
+              Logout
+            </button>
+          )}
+          <button className="cart-button" onClick={() => navigate('/cart')}>
+            <img src="/images/cart1.png" alt="Cart" />{' '}
+            <span>{cartCountValue}</span>
           </button>
-        ) : (
-          <button className="logout-button" onClick={() => logout()}>
-            Logout
-          </button>
-        )}
-        <button className="login-button" onClick={() => navigate('/cart')}>
-          Cart <span>{cartCountValue}</span>
-        </button>
+        </div>
       </div>
-    </nav>
+    </>
   );
 }
 export default Nav;

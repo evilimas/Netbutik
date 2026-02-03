@@ -2,10 +2,13 @@ import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { PetQ } from '../types/petTypes';
+import { addToCart } from '../services/cartServices';
+import { useCartCount } from '../context/cartCountContext';
 
 export default function Pet() {
   const { id } = useParams();
   const [petDetails, setPetDetails] = useState<PetQ | null>(null);
+  const { cartCount: cartCountValue, setCartCount } = useCartCount();
 
   useEffect(() => {
     const fetchPetDetails = async () => {
@@ -20,6 +23,14 @@ export default function Pet() {
 
     fetchPetDetails();
   }, [id]);
+
+  const handleAddToCart = async (pet: PetQ, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    await addToCart(pet.id);
+    console.log('Added to cart:', pet.name, pet.id);
+    setCartCount(cartCountValue + 1);
+  };
 
   const status = petDetails?.sold ? 'Sold' : 'In Stock';
   const price = petDetails?.newPrice ? petDetails.newPrice : petDetails?.price;
@@ -44,7 +55,9 @@ export default function Pet() {
           <div className="right-section">
             <div className="top">
               <p className={petDetails?.sold ? 'sold' : 'in-stock'}>{status}</p>
-              <button>ADD TO CART</button>
+              <button onClick={(event) => handleAddToCart(petDetails!, event)}>
+                ADD TO CART
+              </button>
             </div>
             <h1> {petDetails?.name}</h1>
             {petDetails?.newPrice ? (
