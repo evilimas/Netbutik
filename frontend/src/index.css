@@ -71,18 +71,21 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 /* navigation */
+.nav-container {
+  position: sticky;
+  z-index: 1000;
+  top: 0;
+  background-color: #ffffff;
+}
 .navigation {
   display: flex;
-
-  padding: 0 2em;
+  padding: 0 1em;
   gap: 1em;
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 2px #444;
-  position: sticky;
-  top: 0;
+
   background-color: #ffffff;
-  z-index: 1000;
 }
 .navigation ul {
   list-style: none;
@@ -106,12 +109,23 @@ button:focus-visible {
 }
 .cart-button {
   background: none;
+  border: none;
   color: red;
   /* padding: 0.7em 1.2em; */
   display: flex;
   align-items: center;
   /* gap: 0.5em; */
   font-size: 1.2em;
+  font-weight: 600;
+}
+.cart-button:hover {
+  color: #00067c;
+  cursor: pointer;
+  border: none;
+}
+.cart-button:focus,
+.cart-button:focus-visible {
+  outline: none;
 }
 .cart-button img {
   width: 28px;
@@ -128,7 +142,12 @@ button:focus-visible {
   gap: 1em;
   justify-content: space-between;
   align-items: center;
+  padding: 0.3em 0.5em;
 }
+.buttons button {
+  padding: 0.4em 0.7em;
+}
+
 .buttons .right {
   display: flex;
   /* gap: 1em; */
@@ -439,7 +458,8 @@ p {
   scale: 1.1;
 }
 .pet-list .cart {
-  width: 40px;
+  width: 35px;
+  height: 35px;
 }
 
 .pet-section .pagination {
