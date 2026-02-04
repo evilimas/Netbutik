@@ -76,6 +76,7 @@ function Nav() {
       );
       await navigate('/');
       await setUsername('Guest');
+      setCartCount(0);
       return response.data;
     } catch (err) {
       console.log('failed to log out', err);
@@ -115,7 +116,7 @@ function Nav() {
   // }
 
   return (
-    <>
+    <div className="nav-container">
       <nav className="navigation">
         <img className="logo" src="/images/logo.png" alt="" />
 
@@ -140,13 +141,15 @@ function Nav() {
               Logout
             </button>
           )}
-          <button className="cart-button" onClick={() => navigate('/cart')}>
-            <img src="/images/cart1.png" alt="Cart" />{' '}
-            <span>{cartCountValue}</span>
-          </button>
+          {cartCountValue > 0 && username !== 'Guest' && (
+            <button className="cart-button" onClick={() => navigate('/cart')}>
+              <img src="/images/cart1.png" alt="Cart" />{' '}
+              <span>{cartCountValue}</span>
+            </button>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default Nav;
