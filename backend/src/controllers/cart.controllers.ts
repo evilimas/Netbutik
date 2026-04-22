@@ -76,7 +76,7 @@ export async function getAll(
   //   return res.status(401).json({ message: 'Not autenticated' });
   // }
   const items = await db.all(
-    `SELECT ci.id AS cartItemId, ci.quantity, p.name, p.species, p.breed, p.age, p.price, p.photo
+    `SELECT ci.id AS cartItemId, ci.quantity, p.name, p.species, p.breed, p.age, p.price, p.newPrice, p.photo
     FROM cart_items ci
     JOIN pets p ON p.id = ci.pet_id
     WHERE ci.user_id = ?`,

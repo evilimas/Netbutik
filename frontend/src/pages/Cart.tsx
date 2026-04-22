@@ -66,12 +66,16 @@ function Cart() {
               <h2>
                 {item.species} : {item.name}
               </h2>
-              <p>Price: ${item.price}</p>
+              <p className={item.newPrice ? 'new-price' : ''}>
+                Price: ${item.price}{' '}
+              </p>
+              {item.newPrice && <span>New Price: ${item.newPrice}</span>}
             </div>
             <div className="item-details">
               <h2>Breed : {item.breed}</h2>
               <p>
-                x {item.quantity} = ${item.price * item.quantity}
+                x {item.quantity} = $
+                {(item.newPrice ?? item.price) * item.quantity}
               </p>
             </div>
             <div className="item-details">

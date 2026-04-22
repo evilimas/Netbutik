@@ -6,6 +6,7 @@ type CartItem = {
   breed: string;
   age: number;
   price: number;
+  newPrice?: number;
   photo: string;
 };
 

@@ -733,12 +733,12 @@ p {
 .cart-page h1 {
   text-align: left;
 }
-.cart-items {
-  /* display: flex;
-  flex-direction: column; */
-  /* align-items: baseline; */
-  /* justify-content: baseline; */
-}
+/* .cart-items {
+  display: flex;
+  flex-direction: column; 
+  align-items: baseline;
+   justify-content: baseline;
+} */
 .cart-item {
   display: flex;
   max-width: 1100px;
@@ -793,6 +793,12 @@ p {
 .checkout-button:hover {
   background-color: #00067c;
   cursor: pointer;
+}
+.new-price {
+  text-decoration: line-through;
+}
+.new-price span {
+  text-decoration: none;
 }
 
 /* media queries */

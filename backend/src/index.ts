@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import type { Express, Request, Response } from 'express';
 import cors from 'cors';
@@ -6,6 +7,7 @@ import { authRouter } from './routes/auth.routes';
 import session from 'express-session';
 import { meRouter } from './routes/me.routes';
 import { cartRouter } from './routes/cart.routes';
+import { paymentRouter } from './routes/payment.routes';
 
 const PORT = process.env.PORT || 8000;
 const app: Express = express();
@@ -31,6 +33,9 @@ app.use(
     credentials: true, // Allow credentials
   }),
 );
+
+// Routes
+app.use('/', paymentRouter);
 app.use('/pets/auth/me', meRouter);
 app.use('/pets/auth', authRouter);
 app.use('/pets/cart', cartRouter);
