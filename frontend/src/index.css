@@ -745,11 +745,8 @@ p {
   padding: 1em 0;
 }
 .item-details {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* margin: 0 auto; */
   width: 360px;
-  /* flex-grow: 1; */
+
   flex-shrink: 4;
 }
 .item-details:last-child {
