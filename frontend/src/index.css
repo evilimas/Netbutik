@@ -111,10 +111,8 @@ button:focus-visible {
   background: none;
   border: none;
   color: red;
-  /* padding: 0.7em 1.2em; */
   display: flex;
   align-items: center;
-  /* gap: 0.5em; */
   font-size: 1.2em;
   font-weight: 600;
 }
@@ -229,7 +227,6 @@ p {
 .socials .icons {
   display: flex;
   gap: 5em;
-  /* flex: 1; */
 }
 .socials .text p {
   margin: 0;
