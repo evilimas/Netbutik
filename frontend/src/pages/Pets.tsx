@@ -26,8 +26,8 @@ function Pets() {
       return breedsList;
     }
     const breedsForSpecies = allPets
-      .filter((pet) => pet.species === filters.species)
-      .map((pet) => pet.breed);
+      .filter((pet: PetQ) => pet.species === filters.species)
+      .map((pet: PetQ) => pet.breed);
 
     return [...new Set(breedsForSpecies)];
   };
@@ -98,19 +98,21 @@ function Pets() {
       let result = allPets;
 
       if (filters.species) {
-        result = result.filter((pet) => pet.species === filters.species);
+        result = result.filter((pet: PetQ) => pet.species === filters.species);
       }
 
       if (filters.breed) {
         if (filters.species && filters.breed) {
-          result = result.filter((pet) => pet.species === filters.species);
+          result = result.filter(
+            (pet: PetQ) => pet.species === filters.species,
+          );
         }
-        result = result.filter((pet) => pet.breed === filters.breed);
+        result = result.filter((pet: PetQ) => pet.breed === filters.breed);
       }
 
       if (filters.search) {
         result = result.filter(
-          (pet) =>
+          (pet: PetQ) =>
             pet.name
               .toLocaleLowerCase()
               .includes(filters.search?.toLocaleLowerCase() || '') ||
@@ -182,7 +184,7 @@ function Pets() {
               }
             >
               <option value="">All Breeds</option>
-              {uniqueBreeds.map((breed) => (
+              {uniqueBreeds.map((breed: string) => (
                 <option key={breed} value={breed}>
                   {breed}
                 </option>
@@ -196,7 +198,7 @@ function Pets() {
               value={itemsPerPage}
               onChange={(e) => setItemsPerPage(Number(e.target.value))}
             >
-              {[12, 18, 24, 36, 48].map((number) => (
+              {[12, 18, 24, 36, 48].map((number: number) => (
                 <option key={number} value={number}>
                   {number}
                 </option>
@@ -265,7 +267,7 @@ function Pets() {
         {/* Pagination controls */}
         <nav>
           <ul className="pagination">
-            {pageNumbers.map((number) => (
+            {pageNumbers.map((number: number) => (
               <li key={number} className={page === number ? 'active' : ''}>
                 <button onClick={() => paginate(number)}>{number}</button>
               </li>
