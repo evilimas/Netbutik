@@ -745,7 +745,6 @@ p {
   flex-shrink: 4;
 }
 .item-details:last-child {
-  /* justify-items: end; */
   display: flex;
   justify-content: flex-end;
 }
